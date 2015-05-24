@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2009 - 2013 SC 4ViewSoft SRL
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ public class DialChart extends RoundChart {
 
   /**
    * Builds a new dial chart instance.
-   * 
+   *
    * @param dataset the series dataset
    * @param renderer the dial renderer
    */
@@ -48,7 +48,7 @@ public class DialChart extends RoundChart {
 
   /**
    * The graphical representation of the dial chart.
-   * 
+   *
    * @param canvas the canvas to paint to
    * @param x the top left x value of the view to draw to
    * @param y the top left y value of the view to draw to
@@ -132,12 +132,12 @@ public class DialChart extends RoundChart {
       drawNeedle(canvas, angle, mCenterX, mCenterY, shortRadius, type, paint);
     }
     drawLegend(canvas, mRenderer, titles, left, right, y, width, height, legendSize, paint, false);
-    drawTitle(canvas, x, y, width, paint);
+    drawTitle(canvas, x, ((height + radius)/2), width, paint);
   }
 
   /**
    * Returns the angle for a specific chart value.
-   * 
+   *
    * @param value the chart value
    * @param minAngle the minimum chart angle value
    * @param maxAngle the maximum chart angle value
@@ -154,7 +154,7 @@ public class DialChart extends RoundChart {
 
   /**
    * Draws the chart tick lines.
-   * 
+   *
    * @param canvas the canvas
    * @param min the minimum chart value
    * @param max the maximum chart value
@@ -182,14 +182,8 @@ public class DialChart extends RoundChart {
       int y2 = Math.round(centerY + (float) (longRadius * cosValue));
       canvas.drawLine(x1, y1, x2, y2, paint);
       if (labels) {
-        paint.setTextAlign(Align.LEFT);
-        if (x1 <= x2) {
-          paint.setTextAlign(Align.RIGHT);
-        }
-        String text = i + "";
-        if (Math.round(i) == (long) i) {
-          text = (long) i + "";
-        }
+        paint.setTextAlign( (x1 == x2) ? Align.CENTER : (x1 <= x2) ? Align.RIGHT : Align.LEFT);
+        String text = getLabel(mRenderer.getSeriesRendererAt(0).getChartValuesFormat(), i);
         canvas.drawText(text, x1, y1, paint);
       }
     }
@@ -197,7 +191,7 @@ public class DialChart extends RoundChart {
 
   /**
    * Returns the angle for a specific chart value.
-   * 
+   *
    * @param canvas the canvas
    * @param angle the needle angle value
    * @param centerX the center x value
